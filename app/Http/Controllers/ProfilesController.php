@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 
 class ProfilesController extends Controller
@@ -21,23 +22,50 @@ class ProfilesController extends Controller
     {
         $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
 
-        return view('profiles.show',compact('user','follows'));
+        $postCount = Cache::remember(
+            'count.posts' . $user->id,
+            now()->addSecond(30),
+            function () use ($user) {
+                return $user->posts->count();
+            });
+        $followersCount = Cache::remember(
+            'count.followers' . $user->id,
+            now()->addSecond(30),
+            function () use ($user) {
+                return $user->profile->followers->count();
+            });
+        $followingCount = Cache::remember(
+            'count.following' . $user->id,
+            now()->addSecond(30),
+            function () use ($user) {
+                return $user->following->count();
+            });
+
+        return view('profiles.show', compact('user', 'follows', 'postCount', 'followersCount', 'followingCount'));
     }
 
     public function edit(User $user)
     {
         $this->authorize('update', $user->profile);
 
-        return view('profiles.edit',compact('user'));
+        return view('profiles.edit', compact('user'));
     }
 
-    public function folowing(User $user)
+    public function followers(User $user)
     {
-        $following = $user->profile->following;
+        $followers = $user->profile->followers;
 
-        dd($following);
 
-        return view('profiles.following', compact(''));
+        return view('profiles.followers', compact('followers'));
+    }
+
+    public function following(User $user)
+    {
+
+        $following = $user->following;
+
+
+        return view('profiles.following', compact('following'));
     }
 
     public function update(User $user)
@@ -52,10 +80,10 @@ class ProfilesController extends Controller
         ]);
 
 
-        if(\request('image')){
-            $imagePath = \request('image')->store('profile','public');
+        if (\request('image')) {
+            $imagePath = \request('image')->store('profile', 'public');
 
-            $image = Image::make(public_path("storage/{$imagePath}"))->fit(1000,1000);
+            $image = Image::make(public_path("storage/{$imagePath}"))->fit(1000, 1000);
             $image->save();
             $imageArray = ['image' => $imagePath];
         }

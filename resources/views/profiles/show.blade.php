@@ -25,9 +25,9 @@
                     <a href="/profile/{{$user->id}}/edit" style="text-decoration: none">Edit Profile</a>
                 @endcan
                 <div class="d-flex">
-                    <div class="pe-4"><strong>{{$user->posts->count()}}</strong> posts</div>
-                    <div class="pe-4"><strong>{{$user->profile->followers->count()}}</strong> followers</div>
-                    <div class="pe-4"><a href="#" style="text-decoration: none; color: black"><strong>{{$user->following->count()}}</strong> following</a></div>
+                    <div class="pe-4"><strong>{{$postCount}}</strong> posts</div>
+                    <div class="pe-4"><a href="{{route('profile.followers', $user->profile->id)}}" style="text-decoration: none; color: black"><strong>{{$followersCount}}</strong> followers</a></div>
+                    <div class="pe-4"><a href="{{route('profile.following', $user->profile->id)}}" style="text-decoration: none; color: black"><strong>{{$followingCount}}</strong> following</a></div>
                 </div>
                 <div class="pt-4 fw-bold">
                     {{$user->profile->title ?? null}}

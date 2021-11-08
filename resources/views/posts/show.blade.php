@@ -15,10 +15,16 @@
                     </div>
                     <div class="p-lg-3">
                         <span class="fw-bold">
-                            <a href="/profile/{{$post->user->id}}" style="text-decoration: none; color:black">{{$post->user->username}}</a>
+                            <a href="/profile/{{$post->user->id}}"
+                               style="text-decoration: none; color:black">{{$post->user->username}}</a>
                         </span>
                         <a href="#" style="text-decoration: none" class="p-lg-3">Follow</a>
                     </div>
+                </div>
+                <div>
+                    <a href="#">
+                        <img src="/svg/like.svg"  alt="" style="max-width: 25px; margin-left: 5px">
+                    </a>
                 </div>
 
                 <hr>

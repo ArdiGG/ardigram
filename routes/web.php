@@ -21,7 +21,7 @@ Route::get('/home', [\App\Http\Controllers\ProfilesController::class,'home'])->n
 
 Route::post('follow/{user}', [\App\Http\Controllers\FollowsController::class,'store']);
 
-Route::get('/', [\App\Http\Controllers\PostsController::class,'index']);
+Route::get('/', [\App\Http\Controllers\PostsController::class,'index'])->name('post.index');
 
 Route::get('/p/create',[\App\Http\Controllers\PostsController::class,'create'])->name('post.create');
 Route::post('/p',[\App\Http\Controllers\PostsController::class,'store'])->name('post.store');
@@ -30,4 +30,8 @@ Route::get('/p/{post}',[\App\Http\Controllers\PostsController::class,'show'])->n
 
 Route::get('/profile/{user}', [\App\Http\Controllers\ProfilesController::class,'show'])->name('profile.show');
 Route::get('/profile/{user}/edit',[\App\Http\Controllers\ProfilesController::class,'edit'])->name('profile.edit');
+
+Route::get('/profile/{user}/following', [\App\Http\Controllers\ProfilesController::class,'following'])->name('profile.following');
+Route::get('/profile/{user}/followers', [\App\Http\Controllers\ProfilesController::class,'followers'])->name('profile.followers');
+
 Route::patch('/profile/{user}',[\App\Http\Controllers\ProfilesController::class,'update'])->name('profile.update');
