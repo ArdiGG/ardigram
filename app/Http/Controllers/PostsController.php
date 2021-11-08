@@ -39,6 +39,15 @@ class PostsController extends Controller
         return redirect('/profile/' . auth()->user()->id);
     }
 
+    public function index()
+    {
+        $users = auth()->user()->following()->pluck('profiles.user_id');
+
+        $posts = Post::whereIn('user_id',$users)->latest()->paginate(5);
+
+        return view('posts.index',compact('posts'));
+    }
+
     public function show(\App\Models\Post $post)
     {
         return view('posts.show', compact('post'));

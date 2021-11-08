@@ -11,12 +11,17 @@ class ProfilesController extends Controller
     public function home()
     {
         $user = auth()->user();
-        return view('profiles.show', compact('user'));
+
+        $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
+
+        return view('profiles.show', compact('user', 'follows'));
     }
 
     public function show(User $user)
     {
-        return view('profiles.show',compact('user'));
+        $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
+
+        return view('profiles.show',compact('user','follows'));
     }
 
     public function edit(User $user)
@@ -26,6 +31,15 @@ class ProfilesController extends Controller
         return view('profiles.edit',compact('user'));
     }
 
+    public function folowing(User $user)
+    {
+        $following = $user->profile->following;
+
+        dd($following);
+
+        return view('profiles.following', compact(''));
+    }
+
     public function update(User $user)
     {
         $this->authorize('update', $user->profile);
@@ -33,7 +47,7 @@ class ProfilesController extends Controller
         $data = \request()->validate([
             'title' => '',
             'description' => '',
-            'url' => 'url',
+            'url' => '',
             'image' => '',
         ]);
 
@@ -43,11 +57,13 @@ class ProfilesController extends Controller
 
             $image = Image::make(public_path("storage/{$imagePath}"))->fit(1000,1000);
             $image->save();
+            $imageArray = ['image' => $imagePath];
         }
+
 
         auth()->user()->profile()->update(array_merge(
             $data,
-            ['image' => $imagePath ?? null],
+            $imageArray ?? [],
         ));
 
         return redirect("profile/{$user->id}");
