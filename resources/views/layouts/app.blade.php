@@ -66,6 +66,9 @@
                                     <a class="dropdown-item" href="{{ route('profile.show', Auth::user()->id) }}">
                                         {{ __('Profile') }}
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('profile.people', Auth::user()->id) }}">
+                                        {{ __('People') }}
+                                    </a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

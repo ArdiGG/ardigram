@@ -56,6 +56,11 @@ class ProfilePolicy
         return $user->id == $profile->id;
     }
 
+    public function follow(User $user, Profile $profile)
+    {
+        return $user->id != $profile->id;
+    }
+
     /**
      * Determine whether the user can delete the model.
      *

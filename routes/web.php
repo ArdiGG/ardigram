@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('/email', function(){
+    return new \App\Mail\NewUserWelcomeMail();
+});
+
 Route::get('/home', [\App\Http\Controllers\ProfilesController::class,'home'])->name('home');
 
 Route::post('follow/{user}', [\App\Http\Controllers\FollowsController::class,'store']);
@@ -33,5 +37,7 @@ Route::get('/profile/{user}/edit',[\App\Http\Controllers\ProfilesController::cla
 
 Route::get('/profile/{user}/following', [\App\Http\Controllers\ProfilesController::class,'following'])->name('profile.following');
 Route::get('/profile/{user}/followers', [\App\Http\Controllers\ProfilesController::class,'followers'])->name('profile.followers');
+
+Route::get('/people', [\App\Http\Controllers\ProfilesController::class,'showPeople'])->name('profile.people');
 
 Route::patch('/profile/{user}',[\App\Http\Controllers\ProfilesController::class,'update'])->name('profile.update');

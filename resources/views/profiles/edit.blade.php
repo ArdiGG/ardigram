@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="row pt-3">
-                        <button class="btn btn-primary" style="width: 150px">Add New Post</button>
+                        <button class="btn btn-primary" style="width: 100px">Done</button>
                     </div>
                 </div>
             </div>

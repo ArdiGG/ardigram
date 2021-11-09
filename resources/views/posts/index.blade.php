@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="row offset-2">
-                    <div class="col-4 pt-2">
+                    <div class="col-8 pt-2">
 
                         <p>
                     <span class="fw-bold">
@@ -42,9 +42,9 @@
                     </div>
                 </div>
             @endforeach
-            <div class="rowтзь">
+            <div class="row">
                 <div class="col-12">
-                    {{$posts->links()}}
+                    {{$posts->links("pagination::bootstrap-4")}}
                 </div>
             </div>
 

@@ -13,8 +13,9 @@
 
                     <div class="d-flex align-items-center">
                         <h2>{{$user->username}}</h2>
-
-                    <follow-button user-id="{{$user->id}}" follows="{{$follows ?? 0}}"></follow-button>
+                        @can('follow', $user->profile)
+                            <follow-button user-id="{{$user->id}}" follows="{{$follows ?? 0}}"></follow-button>
+                        @endcan
                     </div>
 
                     @can('update',$user->profile)
@@ -22,12 +23,16 @@
                     @endcan
                 </div>
                 @can('update',$user->profile)
-                    <a href="/profile/{{$user->id}}/edit" style="text-decoration: none">Edit Profile</a>
+                    <a href="/profile/{{$user->id}}/edit" style="text-decoration: none;">Edit Profile</a>
                 @endcan
                 <div class="d-flex">
-                    <div class="pe-4"><strong>{{$postCount}}</strong> posts</div>
-                    <div class="pe-4"><a href="{{route('profile.followers', $user->profile->id)}}" style="text-decoration: none; color: black"><strong>{{$followersCount}}</strong> followers</a></div>
-                    <div class="pe-4"><a href="{{route('profile.following', $user->profile->id)}}" style="text-decoration: none; color: black"><strong>{{$followingCount}}</strong> following</a></div>
+                    <div class="pe-4"><strong>{{$postCount ?? 0}}</strong> posts</div>
+                    <div class="pe-4"><a href="{{route('profile.followers', $user->profile->id)}}"
+                                         style="text-decoration: none; color: black"><strong>{{$followersCount ?? 0}}</strong>
+                            followers</a></div>
+                    <div class="pe-4"><a href="{{route('profile.following', $user->profile->id)}}"
+                                         style="text-decoration: none; color: black"><strong>{{$followingCount ?? 0}}</strong>
+                            following</a></div>
                 </div>
                 <div class="pt-4 fw-bold">
                     {{$user->profile->title ?? null}}
@@ -38,10 +43,23 @@
                 </div>
             </div>
         </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-2 pt-2" style="padding-left: 100px">
+                <a href="#">
+                    <img src="/svg/insta_active.svg" class="" style="max-width: 50px" alt="">
+                </a>
+            </div>
+            <div class="col-2 pt-2 mb-2" style="padding-left: 60px">
+                <a href="#">
+                    <img src="/svg/insta.svg" style="max-width: 50px" alt="">
+                </a>
+            </div>
+            <hr style="margin-top: 10px;">
+        </div>
         <div class="row">
 
             @foreach($user->posts as $post)
-                <div class="col-4  pt-4">
+                <div class="col-4 pt-5">
                     <a href="../p/{{$post->id}}">
                         <img src="/storage/{{$post->image}}" class="w-100">
                     </a>

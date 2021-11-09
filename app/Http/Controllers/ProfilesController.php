@@ -24,22 +24,14 @@ class ProfilesController extends Controller
 
         $postCount = Cache::remember(
             'count.posts' . $user->id,
-            now()->addSecond(30),
+            now()->addSecond(10),
             function () use ($user) {
                 return $user->posts->count();
             });
-        $followersCount = Cache::remember(
-            'count.followers' . $user->id,
-            now()->addSecond(30),
-            function () use ($user) {
-                return $user->profile->followers->count();
-            });
-        $followingCount = Cache::remember(
-            'count.following' . $user->id,
-            now()->addSecond(30),
-            function () use ($user) {
-                return $user->following->count();
-            });
+
+        $followersCount = $this->followersCount($user);
+
+        $followingCount = $this->followingCount($user);
 
         return view('profiles.show', compact('user', 'follows', 'postCount', 'followersCount', 'followingCount'));
     }
@@ -55,8 +47,11 @@ class ProfilesController extends Controller
     {
         $followers = $user->profile->followers;
 
+        $followersCount = $this->followersCount($user);
 
-        return view('profiles.followers', compact('followers'));
+        $followingCount = $this->followingCount($user);
+
+        return view('profiles.followers', compact('user','followers', 'followersCount', 'followingCount'));
     }
 
     public function following(User $user)
@@ -64,8 +59,42 @@ class ProfilesController extends Controller
 
         $following = $user->following;
 
+        $followersCount = $this->followersCount($user);
 
-        return view('profiles.following', compact('following'));
+        $followingCount = $this->followingCount($user);
+
+        return view('profiles.following', compact('user','following','followingCount','followersCount'));
+    }
+
+    public function followingCount(User $user)
+    {
+        $followingCount = Cache::remember(
+            'count.following' . $user->id,
+            now()->addSecond(10),
+            function () use ($user) {
+                return $user->following->count();
+            });
+
+        return $followingCount;
+    }
+
+    public function followersCount(User $user)
+    {
+        $followersCount = Cache::remember(
+            'count.followers' . $user->id,
+            now()->addSecond(10),
+            function () use ($user) {
+                return $user->profile->followers->count();
+            });
+
+        return $followersCount;
+    }
+
+    public function showPeople()
+    {
+        $users = User::inRandomOrder()->get();
+
+        return view('profiles.people', compact('users'));
     }
 
     public function update(User $user)

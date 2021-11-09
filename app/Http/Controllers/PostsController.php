@@ -34,6 +34,8 @@ class PostsController extends Controller
         auth()->user()->posts()->create([
             'caption' => $data['caption'],
             'image' => $imagePath,
+            'likes' => 0,
+            'dislikes' => 0,
         ]);
 
         return redirect('/profile/' . auth()->user()->id);
