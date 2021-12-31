@@ -38,5 +38,6 @@
                 </p>
             </div>
         </div>
+        @yield('info')
     </div>
 @endsection

@@ -33,6 +33,8 @@ Route::post('/p',[\App\Http\Controllers\PostsController::class,'store'])->name('
 Route::get('/p/{post}',[\App\Http\Controllers\PostsController::class,'show'])->name('post.show');
 
 Route::get('/profile/{user}', [\App\Http\Controllers\ProfilesController::class,'show'])->name('profile.show');
+Route::get('/profile/{user}/replies', [\App\Http\Controllers\ProfilesController::class,'show_replies'])->name('profile.show_replies');
+
 Route::get('/profile/{user}/edit',[\App\Http\Controllers\ProfilesController::class,'edit'])->name('profile.edit');
 
 Route::get('/profile/{user}/following', [\App\Http\Controllers\ProfilesController::class,'following'])->name('profile.following');
@@ -41,3 +43,5 @@ Route::get('/profile/{user}/followers', [\App\Http\Controllers\ProfilesControlle
 Route::get('/people', [\App\Http\Controllers\ProfilesController::class,'showPeople'])->name('profile.people');
 
 Route::patch('/profile/{user}',[\App\Http\Controllers\ProfilesController::class,'update'])->name('profile.update');
+
+

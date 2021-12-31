@@ -36,6 +36,24 @@ class ProfilesController extends Controller
         return view('profiles.show', compact('user', 'follows', 'postCount', 'followersCount', 'followingCount'));
     }
 
+    public function show_replies(User $user)
+    {
+        $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
+
+        $postCount = Cache::remember(
+            'count.posts' . $user->id,
+            now()->addSecond(10),
+            function () use ($user) {
+                return $user->posts->count();
+            });
+
+        $followersCount = $this->followersCount($user);
+
+        $followingCount = $this->followingCount($user);
+
+        return view('profiles.show_replies', compact('user', 'follows', 'postCount', 'followersCount', 'followingCount'));
+    }
+
     public function edit(User $user)
     {
         $this->authorize('update', $user->profile);
